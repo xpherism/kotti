@@ -392,10 +392,9 @@ Same as `actions`, `slot-scope` is required and is used to pass data to the expa
 
 ## Custom Render
 
-It is possible to customize parts of the table by passing your own render prop function or using slots
+Like you previously saw with the expand and actions slot it is possible to customize a table column header and cell as well as the empty and loading state render
 
-`KtTable` supports the `renderEmpty`, `renderLoading`, `renderExpand` and `renderActions` props
-`KtTableColumn` supports the `formatter`, `renderHeader`, and `renderCell` props
+unlike actions, expand, and other custom slots slot-scope is not required for the `loading` and `empty` slots
 
 <KtTable
 	:rows="rows"
@@ -457,6 +456,42 @@ It is possible to customize parts of the table by passing your own render prop f
 		prop="date"
 		/>
 </KtTable>
+
+```html
+<KtTable :rows="rows">
+	<div slot="empty">
+		No data to see
+	</div>
+	<div slot="loading">
+		Loading while the loading prop on KtTable is true
+	</div>
+	<KtTableColumn
+		label="Name"
+		prop="name"
+		>
+		<template slot="header" slot-scope="{ value, column, columnIndex }">
+			<div>
+				{{value}}
+			</div>
+		</template>
+		<template slot-scope="{ value, row, rowIndex, column, columnIndex }">
+			<KtAvatar
+				name={value}
+				hoverable
+				src="https://picsum.photos/200"
+				showTooltip
+				small
+				class="mr-16px"
+			/>
+		</template>
+	</KtTableColumn>
+</KtTable>
+```
+
+
+You can also use JSX with `KtTable` by passing functions as render props using the `renderEmpty`, `renderLoading`, `renderExpand` and `renderActions` props
+`KtTableColumn` supports `formatter`, `renderHeader`, and `renderCell` props
+
 
 ```html
 <KtTable
@@ -525,39 +560,6 @@ It is possible to customize parts of the table by passing your own render prop f
 }
 ```
 
-You can also use slots instead of render props like you previously saw with the exapnd and actions slot
-slot-scope is not required for the `loading` and `empty` slots
-
-```html
-<KtTable :rows="rows">
-	<div slot="empty">
-		No data to see
-	</div>
-	<div slot="loading">
-		Loading while the loading prop on KtTable is true
-	</div>
-	<KtTableColumn
-		label="Name"
-		prop="name"
-		>
-		<template slot="header" slot-scope="{ value, column, columnIndex }">
-			<div>
-				{{value}}
-			</div>
-		</template>
-		<template slot-scope="{ value, row, rowIndex, column, columnIndex }">
-			<KtAvatar
-				name={value}
-				hoverable
-				src="https://picsum.photos/200"
-				showTooltip
-				small
-				class="mr-16px"
-			/>
-		</template>
-	</KtTableColumn>
-</KtTable>
-```
 
 ## Usage
 
